@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{632FC753-C316-40F1-80B4-019EA75E3634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDManipulacao.Api", "src\RDManipulacao.Api\RDManipulacao.Api.csproj", "{2CD671BE-46BE-4300-AEFF-65010B0EEA32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDManipulacao.Application", "src\RDManipulacao.Application\RDManipulacao.Application.csproj", "{D4BF4A84-294E-49A0-8FFC-C3EA831A0CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDManipulacao.Domain", "src\RDManipulacao.Domain\RDManipulacao.Domain.csproj", "{0F7FDE7F-0F14-4E45-A387-B7633A89AFA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDManipulacao.Infrastructure", "src\RDManipulacao.Infrastructure\RDManipulacao.Infrastructure.csproj", "{C31A3794-35A2-4ECA-AAB2-9F501F17FA7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1FCFE822-8132-4EE5-A07C-37411A688D2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDManipulacao.Tests", "tests\RDManipulacao.Tests\RDManipulacao.Tests.csproj", "{83B646AF-5DDF-4914-BA41-724269488023}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{1CB1F5B7-CA09-41D5-8AFF-690A12EC2F22}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CD671BE-46BE-4300-AEFF-65010B0EEA32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CD671BE-46BE-4300-AEFF-65010B0EEA32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CD671BE-46BE-4300-AEFF-65010B0EEA32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CD671BE-46BE-4300-AEFF-65010B0EEA32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4BF4A84-294E-49A0-8FFC-C3EA831A0CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4BF4A84-294E-49A0-8FFC-C3EA831A0CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4BF4A84-294E-49A0-8FFC-C3EA831A0CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4BF4A84-294E-49A0-8FFC-C3EA831A0CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F7FDE7F-0F14-4E45-A387-B7633A89AFA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F7FDE7F-0F14-4E45-A387-B7633A89AFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F7FDE7F-0F14-4E45-A387-B7633A89AFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F7FDE7F-0F14-4E45-A387-B7633A89AFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C31A3794-35A2-4ECA-AAB2-9F501F17FA7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C31A3794-35A2-4ECA-AAB2-9F501F17FA7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C31A3794-35A2-4ECA-AAB2-9F501F17FA7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C31A3794-35A2-4ECA-AAB2-9F501F17FA7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83B646AF-5DDF-4914-BA41-724269488023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83B646AF-5DDF-4914-BA41-724269488023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83B646AF-5DDF-4914-BA41-724269488023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83B646AF-5DDF-4914-BA41-724269488023}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2CD671BE-46BE-4300-AEFF-65010B0EEA32} = {632FC753-C316-40F1-80B4-019EA75E3634}
+		{D4BF4A84-294E-49A0-8FFC-C3EA831A0CF7} = {632FC753-C316-40F1-80B4-019EA75E3634}
+		{0F7FDE7F-0F14-4E45-A387-B7633A89AFA4} = {632FC753-C316-40F1-80B4-019EA75E3634}
+		{C31A3794-35A2-4ECA-AAB2-9F501F17FA7A} = {632FC753-C316-40F1-80B4-019EA75E3634}
+		{83B646AF-5DDF-4914-BA41-724269488023} = {1FCFE822-8132-4EE5-A07C-37411A688D2D}
+	EndGlobalSection
+EndGlobal

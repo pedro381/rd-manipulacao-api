@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "RDManipulacao.Infrastructure": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:34164;http://localhost:34165"
+    }
+  }
+}
