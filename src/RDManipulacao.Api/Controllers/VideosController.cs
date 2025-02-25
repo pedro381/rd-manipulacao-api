@@ -6,14 +6,9 @@ namespace RDManipulacao.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class VideosController : ControllerBase
+    public class VideosController(IVideoService videoService) : ControllerBase
     {
-        private readonly IVideoService _videoService;
-
-        public VideosController(IVideoService videoService)
-        {
-            _videoService = videoService;
-        }
+        private readonly IVideoService _videoService = videoService;
 
         // GET: api/videos
         [HttpGet]
@@ -24,7 +19,7 @@ namespace RDManipulacao.Api.Controllers
                 var videos = await _videoService.GetAllVideosAsync(pageNumber, pageSize);
                 return Ok(videos);
             }
-            catch (Exception ex)
+            catch
             {
                 // Registro do erro pode ser feito via logger (aqui retornamos apenas o erro genérico)
                 return StatusCode(500, "Erro interno no servidor.");
@@ -43,7 +38,7 @@ namespace RDManipulacao.Api.Controllers
 
                 return Ok(video);
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "Erro interno no servidor.");
             }
@@ -61,7 +56,7 @@ namespace RDManipulacao.Api.Controllers
                 var result = await _videoService.AddVideoAsync(Video.BaseToVideo(video));
                 return CreatedAtAction(nameof(GetById), new { id = result.Id }, video);
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "Erro interno no servidor.");
             }
@@ -86,7 +81,7 @@ namespace RDManipulacao.Api.Controllers
 
                 return NoContent();
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "Erro interno no servidor.");
             }
@@ -105,7 +100,7 @@ namespace RDManipulacao.Api.Controllers
                 await _videoService.DeleteVideoAsync(id);
                 return NoContent();
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "Erro interno no servidor.");
             }

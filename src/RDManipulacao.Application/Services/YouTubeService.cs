@@ -1,5 +1,6 @@
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using RDManipulacao.Domain.Configurations;
 using RDManipulacao.Application.Interfaces;
 using RDManipulacao.Domain.Models;
 
@@ -7,87 +8,64 @@ namespace RDManipulacao.Application.Services
 {
     public class YouTubeService : IYouTubeService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IYouTubeApi _youTubeApi;
         private readonly ILogger<YouTubeService> _logger;
-        private readonly string _apiKey;
+        private readonly YouTubeApiSettings _settings;
 
-        public YouTubeService(ILogger<YouTubeService> logger)
+        public YouTubeService(IYouTubeApi youTubeApi, IOptions<YouTubeApiSettings> settings, ILogger<YouTubeService> logger)
         {
-            _httpClient = new HttpClient();
+            _youTubeApi = youTubeApi;
             _logger = logger;
-            _apiKey = Environment.GetEnvironmentVariable("YOUTUBE_API_KEY");
-            if (string.IsNullOrEmpty(_apiKey))
+            _settings = settings.Value;
+
+            if (string.IsNullOrEmpty(_settings.ApiKey))
             {
-                throw new Exception("A chave da API do YouTube não foi configurada na variável de ambiente 'YOUTUBE_API_KEY'.");
+                throw new Exception("A chave da API do YouTube não foi configurada.");
             }
         }
 
         public async Task<List<YouTubeVideo>> GetVideosAsync()
         {
-            var videos = new List<YouTubeVideo>();
-            // URL base para a pesquisa
-            string baseUrl = "https://www.googleapis.com/youtube/v3/search";
-            // Consulta: vídeos relacionados à manipulação de medicamentos
-            string query = "manipulação de medicamentos";
-            // Filtrando por vídeos brasileiros publicados em 2025
-            string url = $"{baseUrl}?part=snippet" +
-                         $"&q={Uri.EscapeDataString(query)}" +
-                         $"&regionCode=BR" +
-                         $"&publishedAfter=2025-01-01T00:00:00Z" +
-                         $"&publishedBefore=2026-01-01T00:00:00Z" +
-                         $"&key={_apiKey}";
-
             try
             {
                 _logger.LogInformation("Requisitando vídeos da API do YouTube.");
-                var response = await _httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
 
-                var jsonString = await response.Content.ReadAsStringAsync();
+                var response = await _youTubeApi.SearchVideosAsync(
+                    part: "snippet",
+                    query: _settings.Query,
+                    regionCode: _settings.RegionCode,
+                    publishedAfter: _settings.PublishedAfter,
+                    publishedBefore: _settings.PublishedBefore,
+                    apiKey: _settings.ApiKey
+                );
 
-                using (var jsonDoc = JsonDocument.Parse(jsonString))
+                var videos = new List<YouTubeVideo>();
+
+                if (response?.Items != null)
                 {
-                    var root = jsonDoc.RootElement;
-                    if (root.TryGetProperty("items", out JsonElement items))
+                    foreach (var item in response.Items)
                     {
-                        foreach (var item in items.EnumerateArray())
+                        if (item.Snippet != null)
                         {
-                            // Obter o ID do vídeo (caso exista)
-                            string videoId = "";
-                            if (item.TryGetProperty("id", out JsonElement idElement))
-                            {
-                                if (idElement.TryGetProperty("videoId", out JsonElement videoIdElement))
-                                {
-                                    videoId = videoIdElement.GetString();
-                                }
-                            }
-
-                            var snippet = item.GetProperty("snippet");
-                            string title = snippet.GetProperty("title").GetString();
-                            string description = snippet.GetProperty("description").GetString();
-                            string channelTitle = snippet.GetProperty("channelTitle").GetString();
-                            string publishedAtString = snippet.GetProperty("publishedAt").GetString();
-                            DateTime publishedAt = DateTime.Parse(publishedAtString);
-
                             videos.Add(new YouTubeVideo
                             {
-                                VideoId = videoId,
-                                Title = title,
-                                Description = description,
-                                ChannelTitle = channelTitle,
-                                PublishedAt = publishedAt
+                                VideoId = item.Id?.VideoId,
+                                Title = item.Snippet.Title,
+                                Description = item.Snippet.Description,
+                                ChannelTitle = item.Snippet.ChannelTitle,
+                                PublishedAt = item.Snippet.PublishedAt
                             });
                         }
                     }
                 }
+
+                return videos;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao acessar a API do YouTube.");
                 throw;
             }
-
-            return videos;
         }
     }
 }

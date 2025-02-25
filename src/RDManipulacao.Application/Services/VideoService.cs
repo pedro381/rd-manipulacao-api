@@ -5,16 +5,10 @@ using RDManipulacao.Infrastructure.Interfaces;
 
 namespace RDManipulacao.Application.Services
 {
-    public class VideoService : IVideoService
+    public class VideoService(IVideoRepository videoRepository, ILogger<VideoService> logger) : IVideoService
     {
-        private readonly IVideoRepository _videoRepository;
-        private readonly ILogger<VideoService> _logger;
-
-        public VideoService(IVideoRepository videoRepository, ILogger<VideoService> logger)
-        {
-            _videoRepository = videoRepository;
-            _logger = logger;
-        }
+        private readonly IVideoRepository _videoRepository = videoRepository;
+        private readonly ILogger<VideoService> _logger = logger;
 
         public async Task<IEnumerable<Video>> GetAllVideosAsync(int pageNumber, int pageSize)
         {
@@ -30,7 +24,7 @@ namespace RDManipulacao.Application.Services
             }
         }
 
-        public async Task<Video> GetVideoByIdAsync(int id)
+        public async Task<Video?> GetVideoByIdAsync(int id)
         {
             try
             {

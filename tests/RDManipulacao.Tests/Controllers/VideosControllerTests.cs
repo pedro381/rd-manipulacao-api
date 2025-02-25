@@ -3,12 +3,12 @@ using RDManipulacao.Api.Controllers;
 using RDManipulacao.Application.Interfaces;
 using RDManipulacao.Domain.Entities;
 
-namespace RDManipulacao.Api.Tests.Controllers
+namespace RDManipulacao.Tests.Controllers
 {
     // Implementação fake do IVideoService para testes
     public class FakeVideoService : IVideoService
     {
-        private readonly List<Video> _videos = new();
+        private readonly List<Video> _videos = [];
         private int _nextId = 1;
 
         public Task<IEnumerable<Video>> GetAllVideosAsync(int pageNumber, int pageSize)
@@ -20,7 +20,7 @@ namespace RDManipulacao.Api.Tests.Controllers
             return Task.FromResult(pagedVideos.AsEnumerable());
         }
 
-        public Task<Video> GetVideoByIdAsync(int id)
+        public Task<Video?> GetVideoByIdAsync(int id)
         {
             var video = _videos.FirstOrDefault(v => v.Id == id && !v.IsDeleted);
             return Task.FromResult(video);
@@ -160,7 +160,7 @@ namespace RDManipulacao.Api.Tests.Controllers
             // Assert
             Assert.IsType<NoContentResult>(result);
             var updatedVideo = await _fakeService.GetVideoByIdAsync(addedVideo.Id);
-            Assert.Equal("Título Atualizado", updatedVideo.Titulo);
+            Assert.Equal("Título Atualizado", updatedVideo?.Titulo);
         }
 
         [Fact]

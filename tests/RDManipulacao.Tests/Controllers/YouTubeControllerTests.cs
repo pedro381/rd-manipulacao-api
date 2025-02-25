@@ -1,79 +1,73 @@
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using RDManipulacao.Api.Controllers;
 using RDManipulacao.Application.Interfaces;
 using RDManipulacao.Domain.Models;
 
-namespace RDManipulacao.Api.Tests.Controllers
+namespace RDManipulacao.Tests.Controllers
 {
     public class YouTubeControllerTests
     {
-        // Fake service que retorna uma lista pré-definida de vídeos
-        private class FakeYouTubeService : IYouTubeService
-        {
-            public Task<List<YouTubeVideo>> GetVideosAsync()
-            {
-                var videos = new List<YouTubeVideo>
-                {
-                    new YouTubeVideo
-                    {
-                        VideoId = "video1",
-                        Title = "Video 1",
-                        Description = "Description 1",
-                        ChannelTitle = "Channel 1",
-                        PublishedAt = DateTime.UtcNow
-                    },
-                    new YouTubeVideo
-                    {
-                        VideoId = "video2",
-                        Title = "Video 2",
-                        Description = "Description 2",
-                        ChannelTitle = "Channel 2",
-                        PublishedAt = DateTime.UtcNow
-                    }
-                };
+        private readonly Mock<IYouTubeService> _youTubeServiceMock;
+        private readonly YouTubeController _controller;
 
-                return Task.FromResult(videos);
-            }
-        }
-
-        // Fake service que lança uma exceção para simular erro
-        private class ExceptionThrowingYouTubeService : IYouTubeService
+        public YouTubeControllerTests()
         {
-            public Task<List<YouTubeVideo>> GetVideosAsync()
-            {
-                throw new Exception("Simulated exception");
-            }
+            _youTubeServiceMock = new Mock<IYouTubeService>();
+            _controller = new YouTubeController(_youTubeServiceMock.Object);
         }
 
         [Fact]
         public async Task GetVideos_ReturnsOkResult_WithListOfVideos()
         {
             // Arrange
-            IYouTubeService fakeService = new FakeYouTubeService();
-            var controller = new YouTubeController(fakeService);
+            var sampleVideos = new List<YouTubeVideo>
+            {
+                new() {
+                    VideoId = "video1",
+                    Title = "Título 1",
+                    Description = "Descrição 1",
+                    ChannelTitle = "Canal 1",
+                    PublishedAt = DateTime.UtcNow
+                },
+                new() {
+                    VideoId = "video2",
+                    Title = "Título 2",
+                    Description = "Descrição 2",
+                    ChannelTitle = "Canal 2",
+                    PublishedAt = DateTime.UtcNow
+                }
+            };
+
+            _youTubeServiceMock
+                .Setup(service => service.GetVideosAsync())
+                .ReturnsAsync(sampleVideos);
 
             // Act
-            var result = await controller.GetVideos();
+            var result = await _controller.GetVideos();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnedVideos = Assert.IsAssignableFrom<List<YouTubeVideo>>(okResult.Value);
-            Assert.Equal(2, returnedVideos.Count);
+            var returnedVideos = Assert.IsType<List<YouTubeVideo>>(okResult.Value);
+            Assert.Equal(sampleVideos.Count, returnedVideos.Count);
+            Assert.Equal(sampleVideos[0].VideoId, returnedVideos[0].VideoId);
         }
 
         [Fact]
-        public async Task GetVideos_WhenExceptionThrown_ReturnsStatusCode500()
+        public async Task GetVideos_ReturnsInternalServerError_WhenExceptionIsThrown()
         {
             // Arrange
-            IYouTubeService throwingService = new ExceptionThrowingYouTubeService();
-            var controller = new YouTubeController(throwingService);
+            _youTubeServiceMock
+                .Setup(service => service.GetVideosAsync())
+                .ThrowsAsync(new Exception("Erro de teste"));
 
             // Act
-            var result = await controller.GetVideos();
+            var result = await _controller.GetVideos();
 
             // Assert
-            var statusResult = Assert.IsType<ObjectResult>(result);
-            Assert.Equal(500, statusResult.StatusCode);
+            var objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, objectResult.StatusCode);
+            Assert.Equal("Erro interno ao buscar vídeos da API do YouTube.", objectResult.Value);
         }
     }
 }

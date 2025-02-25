@@ -6,16 +6,10 @@ using Microsoft.Extensions.Logging;
 
 namespace RDManipulacao.Infrastructure.Repositories
 {
-    public class VideoRepository : IVideoRepository
+    public class VideoRepository(AppDbContext context, ILogger<VideoRepository> logger) : IVideoRepository
     {
-        private readonly AppDbContext _context;
-        private readonly ILogger<VideoRepository> _logger;
-
-        public VideoRepository(AppDbContext context, ILogger<VideoRepository> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly AppDbContext _context = context;
+        private readonly ILogger<VideoRepository> _logger = logger;
 
         public async Task<IEnumerable<Video>> GetAllAsync(int pageNumber, int pageSize)
         {
@@ -36,7 +30,7 @@ namespace RDManipulacao.Infrastructure.Repositories
             }
         }
 
-        public async Task<Video> GetByIdAsync(int id)
+        public async Task<Video?> GetByIdAsync(int id)
         {
             try
             {

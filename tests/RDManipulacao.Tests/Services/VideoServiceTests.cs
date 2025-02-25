@@ -3,7 +3,7 @@ using RDManipulacao.Application.Services;
 using RDManipulacao.Domain.Entities;
 using RDManipulacao.Infrastructure.Interfaces;
 
-namespace RDManipulacao.Application.Tests
+namespace RDManipulacao.Tests.Services
 {
     public class VideoServiceTests
     {
@@ -78,7 +78,7 @@ namespace RDManipulacao.Application.Tests
             Assert.NotNull(addedVideo);
             Assert.True(addedVideo.Id > 0);
             var fetchedVideo = await _videoService.GetVideoByIdAsync(addedVideo.Id);
-            Assert.Equal("New Video", fetchedVideo.Titulo);
+            Assert.Equal("New Video", fetchedVideo?.Titulo);
         }
 
         [Fact]
@@ -104,13 +104,13 @@ namespace RDManipulacao.Application.Tests
             var updatedVideo = await _videoService.GetVideoByIdAsync(10);
 
             // Assert
-            Assert.Equal("Updated Title", updatedVideo.Titulo);
+            Assert.Equal("Updated Title", updatedVideo?.Titulo);
         }
 
         // Fake implementation of IVideoRepository for testing purposes
         private class FakeVideoRepository : IVideoRepository
         {
-            private readonly List<Video> _videos = new();
+            private readonly List<Video> _videos = [];
             private int _nextId = 1;
 
             public Task<IEnumerable<Video>> GetAllAsync(int pageNumber, int pageSize)
@@ -122,7 +122,7 @@ namespace RDManipulacao.Application.Tests
                 return Task.FromResult(pagedVideos);
             }
 
-            public Task<Video> GetByIdAsync(int id)
+            public Task<Video?> GetByIdAsync(int id)
             {
                 var video = _videos.FirstOrDefault(v => v.Id == id && !v.IsDeleted);
                 return Task.FromResult(video);
@@ -167,7 +167,7 @@ namespace RDManipulacao.Application.Tests
             // Helper method to seed multiple videos for pagination tests
             public void AddInitialVideos(int count)
             {
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     _videos.Add(new Video
                     {

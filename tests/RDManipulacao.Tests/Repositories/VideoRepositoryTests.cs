@@ -4,7 +4,7 @@ using RDManipulacao.Domain.Entities;
 using RDManipulacao.Infrastructure.Data;
 using RDManipulacao.Infrastructure.Repositories;
 
-namespace RDManipulacao.Infrastructure.Tests
+namespace RDManipulacao.Tests.Repositories
 {
     public class VideoRepositoryTests : IDisposable
     {
@@ -79,7 +79,7 @@ namespace RDManipulacao.Infrastructure.Tests
         {
             // Arrange
             // Adiciona 5 vídeos ao banco de dados
-            for (int i = 1; i <= 5; i++)
+            for (var i = 1; i <= 5; i++)
             {
                 _context.Videos.Add(new Video
                 {
@@ -129,8 +129,8 @@ namespace RDManipulacao.Infrastructure.Tests
             var updatedVideo = await _context.Videos.FindAsync(video.Id);
 
             // Assert
-            Assert.Equal("Título Novo", updatedVideo.Titulo);
-            Assert.Equal("Descrição Nova", updatedVideo.Descricao);
+            Assert.Equal("Título Novo", updatedVideo?.Titulo);
+            Assert.Equal("Descrição Nova", updatedVideo?.Descricao);
         }
 
         [Fact]
@@ -155,12 +155,9 @@ namespace RDManipulacao.Infrastructure.Tests
             var deletedVideo = await _context.Videos.FindAsync(video.Id);
 
             // Assert
-            Assert.True(deletedVideo.IsDeleted);
+            Assert.True(deletedVideo?.IsDeleted);
         }
 
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
+        public void Dispose() => _context?.Dispose();
     }
 }
