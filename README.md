@@ -64,7 +64,7 @@ RDManipulacao.sln
 ### Clonando o Repositório
 ```bash
 git clone https://github.com/pedro381/rd-manipulacao-api.git
-cd RDManipulacao
+cd rd-manipulacao-api
 ```
 
 ### Restaurando e Construindo a Solução
@@ -76,13 +76,13 @@ dotnet build
 ### Executando a API
 1. Navegue até o diretório da API:
    ```bash
-   cd RDManipulacao.Api
+   cd src/RDManipulacao.Api
    ```
 2. Execute a aplicação:
    ```bash
    dotnet run
    ```
-3. A API estará disponível em `https://localhost:7047` (ou na porta configurada). Você pode acessar a interface do Swagger em `https://localhost:7047/swagger` para testar os endpoints.
+3. A API estará disponível em `https://localhost:5088` (ou na porta configurada). Você pode acessar a interface do Swagger em `http://localhost:5088/swagger` para testar os endpoints.
 
 ## Configuração
 
