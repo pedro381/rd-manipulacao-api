@@ -25,7 +25,6 @@ RDManipulacao.sln
 │   │   ├── VideosController.cs
 │   │   └── YouTubeController.cs
 │   ├── Program.cs
-│   ├── Startup.cs
 │   ├── appsettings.json
 │   └── RDManipulacao.Api.csproj
 │
@@ -33,8 +32,6 @@ RDManipulacao.sln
 │   ├── Interfaces
 │   │   ├── IVideoService.cs
 │   │   └── IYouTubeService.cs
-│   ├── Models
-│   │   └── YouTubeVideo.cs
 │   ├── Services
 │   │   ├── VideoService.cs
 │   │   └── YouTubeService.cs
@@ -42,7 +39,10 @@ RDManipulacao.sln
 │
 ├── RDManipulacao.Domain
 │   ├── Entities
+│   │   ├── VideoBase.cs
 │   │   └── Video.cs
+│   ├── Models
+│   │   └── YouTubeVideo.cs
 │   └── RDManipulacao.Domain.csproj
 │
 └── RDManipulacao.Infrastructure
@@ -63,7 +63,7 @@ RDManipulacao.sln
 
 ### Clonando o Repositório
 ```bash
-git clone <URL_DO_REPOSITÓRIO>
+git clone https://github.com/pedro381/rd-manipulacao-api.git
 cd RDManipulacao
 ```
 
@@ -82,7 +82,7 @@ dotnet build
    ```bash
    dotnet run
    ```
-3. A API estará disponível em `https://localhost:5001` (ou na porta configurada). Você pode acessar a interface do Swagger em `https://localhost:5001/swagger` para testar os endpoints.
+3. A API estará disponível em `https://localhost:7047` (ou na porta configurada). Você pode acessar a interface do Swagger em `https://localhost:7047/swagger` para testar os endpoints.
 
 ## Configuração
 
@@ -142,8 +142,3 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar
 
 ## Licença
 Este projeto está licenciado sob a [MIT License](LICENSE).
-
----
-
-Este README fornece uma visão detalhada do projeto RDManipulacao, incluindo instruções de instalação, configuração, estrutura de diretórios e endpoints disponíveis. Para quaisquer dúvidas ou sugestões, sinta-se livre para entrar em contato.
-```
